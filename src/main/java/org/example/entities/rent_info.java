@@ -9,7 +9,6 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name ="rent_infos")
@@ -27,6 +26,12 @@ public class rent_info {
     @ManyToOne
     private Customer customer;
 
-
-
+    @Override
+    public String toString() {
+        return "rent_info{" +
+                "id=" + id +
+                ", checkOut=" + checkOut +
+                ", checkIn=" + checkIn +
+                '}';
+    }
 }

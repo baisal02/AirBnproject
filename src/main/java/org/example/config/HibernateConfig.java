@@ -18,7 +18,7 @@ public class HibernateConfig {
             properties.put(Environment.JAKARTA_JDBC_USER, "postgres");
             properties.put(Environment.JAKARTA_JDBC_PASSWORD, "1234");
             properties.put(Environment.DIALECT, "org.hibernate.dialect.PostgreSQLDialect");
-            properties.put(Environment.HBM2DDL_AUTO, "create");
+            properties.put(Environment.HBM2DDL_AUTO, "update");
             properties.put(Environment.SHOW_SQL, "true");
             Configuration configuration = new Configuration();
             configuration.addProperties(properties);

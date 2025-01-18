@@ -3,12 +3,12 @@ package org.example.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name ="agencies")
@@ -19,14 +19,33 @@ public class Agency {
     private Long id;
     private String name;
     private String phoneNumber;
+
+
+
+
+
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Address address;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<Owner>owners;
+    private List<Owner>owners = new ArrayList<>();
 
-    @OneToMany(cascade = {CascadeType.REMOVE})
-    private List<rent_info>rent_infos;
+    @OneToMany(cascade = CascadeType.REMOVE)
+    private List<rent_info>rent_infos = new ArrayList<>();
 
+
+
+
+    @Override
+    public String toString() {
+        return "Agency{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", address=" + address +
+                ", owners=" + owners +
+                ", rent_infos=" + rent_infos +
+                '}';
+    }
 
 }

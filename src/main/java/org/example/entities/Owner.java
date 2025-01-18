@@ -4,13 +4,14 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.example.entities.enums.Gender;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name ="owners")
@@ -24,17 +25,34 @@ public class Owner {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
     private Date dateOfBirth;
+
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
+
     @ManyToMany(mappedBy = "owners")
-    private List<Agency>agencies;
+    private List<Agency>agencies =new ArrayList<>();
 
     @OneToMany(mappedBy = "owner",cascade = CascadeType.REMOVE)
-    private List<rent_info>rent_infos;
+    private List<rent_info>rent_infos = new ArrayList<>();
 
     @OneToMany(mappedBy = "owner",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
-    private List<House>houses;
+    private List<House>houses = new ArrayList<>();
 
 
+
+    @Override
+    public String toString() {
+        return "Owner{" +
+                "houses=" + houses +
+                ", id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", gender=" + gender +
+                ", rent_infos=" + rent_infos +
+                '}';
+    }
 }
 
