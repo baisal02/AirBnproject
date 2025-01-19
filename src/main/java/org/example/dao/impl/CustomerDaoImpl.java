@@ -32,7 +32,7 @@ public class CustomerDaoImpl implements CustomerDao {
 
 
     @Override
-    public void RentHouse(Long CustomerId, Long HouseId, Long AgencyId, Date checkIn, Date checkOut) {
+    public void RentHouse(Long CustomerId, Long HouseId, Date checkIn, Date checkOut) {
         rent_info rentinfo = new rent_info();
         rentinfo.setCheckIn(checkIn);
         rentinfo.setCheckOut(checkOut);
@@ -44,11 +44,13 @@ public class CustomerDaoImpl implements CustomerDao {
             customer.getRentInfoList().add(rentinfo);
             em.persist(customer);
 
+            //to make relation
             House house = em.find(House.class, HouseId);
             house.setRent_info(rentinfo);
-
-            Agency agency = em.find(Agency.class, AgencyId);
-            agency.getRent_infos().add(rentinfo);
+            //to make relation
+            Owner owner = em.find(Owner.class, house.getOwner().getId());
+            owner.getRent_infos().add(rentinfo);
+            rentinfo.setOwner(owner);
 
             em.getTransaction().commit();
         } catch (HibernateException e) {
@@ -94,7 +96,13 @@ public class CustomerDaoImpl implements CustomerDao {
             Customer customer = em.find(Customer.class, CustomerId);
             int a = customer.getRentInfoList().size();
             if (customer.getRentInfoList().isEmpty() ||
-                    customer.getRentInfoList().get(a - 1).getCheckOut().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().isBefore(LocalDate.now())) {
+                    customer.getRentInfoList().get(a - 1).
+                            getCheckOut().
+                            toInstant().
+                            atZone(ZoneId.systemDefault()).
+                            toLocalDate().
+                            isBefore(LocalDate.now())) {
+                customer.getRentInfoList().clear();
                 em.remove(customer);
             }
         } catch (HibernateException e) {

@@ -26,7 +26,7 @@ public class Agency {
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Address address;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE},fetch = FetchType.EAGER)
     private List<Owner>owners = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.REMOVE)

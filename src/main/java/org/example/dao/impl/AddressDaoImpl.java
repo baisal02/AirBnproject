@@ -43,7 +43,7 @@ public class AddressDaoImpl implements AddressDao {
             em.getTransaction().begin();
            agencies = em.createQuery("from Agency", Agency.class).getResultList();
            for (Agency ag : agencies) {
-               if(ag.getAddress().getCity().equals(cityName)){ count++;}
+               if(ag.getAddress().getCity()!=null&&ag.getAddress().getCity().equals(cityName)){ count++;}
            }
            em.getTransaction().commit();
            return count;
@@ -65,7 +65,7 @@ public class AddressDaoImpl implements AddressDao {
             List<String> regions = em.createQuery(hql).getResultList();
             for (String region : regions) {
                 for (Agency agency:agencies){
-                    if(agency.getAddress().getRegion().equals(region)){
+                    if(agency.getAddress().getRegion()!=null&&agency.getAddress().getRegion().equals(region)){
                         temporaryAgencies.add(agency);
                     }
                     returnMap.put(region,temporaryAgencies);

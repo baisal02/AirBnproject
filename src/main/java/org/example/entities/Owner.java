@@ -36,7 +36,7 @@ public class Owner {
     @OneToMany(mappedBy = "owner",cascade = CascadeType.REMOVE)
     private List<rent_info>rent_infos = new ArrayList<>();
 
-    @OneToMany(mappedBy = "owner",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+    @OneToMany(mappedBy = "owner",cascade = {CascadeType.PERSIST,CascadeType.REMOVE},fetch = FetchType.EAGER)
     private List<House>houses = new ArrayList<>();
 
 

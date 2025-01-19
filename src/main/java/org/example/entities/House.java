@@ -28,7 +28,7 @@ public class House {
     @ManyToOne
     private Owner owner;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     private Address address;
 
     @OneToOne

@@ -19,43 +19,45 @@ import java.util.List;
 
 public class HouseDaoImpl implements HouseDao {
     private final EntityManagerFactory factory = HibernateConfig.entityManagerFactory();
+
     @Override
     public void save(House house) {
-        try (EntityManager em = factory.createEntityManager()){
+        try (EntityManager em = factory.createEntityManager()) {
             em.getTransaction().begin();
             em.persist(house);
             em.getTransaction().commit();
-        }catch (HibernateException e){
+        } catch (HibernateException e) {
             System.out.println(e.getMessage());
         }
     }
 
     @Override
     public void saveHouseRelatedToOwner(House house, Long ownerId) {
-        try (EntityManager em = factory.createEntityManager()){
+        try (EntityManager em = factory.createEntityManager()) {
             em.getTransaction().begin();
             Owner owner = em.find(Owner.class, ownerId);
             owner.getHouses().add(house);
             house.setOwner(owner);
             em.persist(house);
             em.getTransaction().commit();
-        }catch (HibernateException e){
+        } catch (HibernateException e) {
             System.out.println(e.getMessage());
         }
     }
 
     @Override
     public List<House> getHousesByRegion(String regionName) {
-        List<House>houses = new ArrayList<>();
-        try (EntityManager em = factory.createEntityManager()){
+        List<House> houses = new ArrayList<>();
+        try (EntityManager em = factory.createEntityManager()) {
             em.getTransaction().begin();
-           for(House h: em.createQuery("FROM House",House.class).getResultList()){
-               if(h.getAddress().getRegion().equalsIgnoreCase(regionName)){
-               houses.add(h);}
-           }
+            for (House h : em.createQuery("FROM House", House.class).getResultList()) {
+                if (h.getAddress().getRegion().equalsIgnoreCase(regionName)) {
+                    houses.add(h);
+                }
+            }
             em.getTransaction().commit();
-           return houses;
-        }catch (HibernateException e){
+            return houses;
+        } catch (HibernateException e) {
             System.out.println(e.getMessage());
         }
         return null;
@@ -63,16 +65,16 @@ public class HouseDaoImpl implements HouseDao {
 
     @Override
     public List<House> getHousesByAgencyId(Long agencyId) {
-        List<House>houses = new ArrayList<>();
-        try (EntityManager em = factory.createEntityManager()){
+        List<House> houses = new ArrayList<>();
+        try (EntityManager em = factory.createEntityManager()) {
             em.getTransaction().begin();
             Agency agency = em.find(Agency.class, agencyId);
-            for(Owner o: agency.getOwners()){
-                o.getHouses().forEach(house->houses.add(house));
+            for (Owner o : agency.getOwners()) {
+                o.getHouses().forEach(house -> houses.add(house));
             }
             em.getTransaction().commit();
             return houses;
-        }catch (HibernateException e){
+        } catch (HibernateException e) {
             System.out.println(e.getMessage());
         }
         return null;
@@ -99,17 +101,17 @@ public class HouseDaoImpl implements HouseDao {
 
         try (EntityManager em = factory.createEntityManager()) {
             em.getTransaction().begin();
-          List<House> houses = em.createQuery("FROM House",House.class).getResultList();
-          for(House theHouse: houses){
-              //from Date to LocalDate
-              LocalDate ThehouseCheckIn = theHouse.getRent_info().getCheckIn().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-              if(ThehouseCheckIn.isAfter(startDate)&&ThehouseCheckIn.isBefore(endDate)){
-                  returningHouses.add(theHouse);
-              }
-          }
-          em.getTransaction().commit();
-          return returningHouses;
-        }catch (HibernateException e){
+            List<House> houses = em.createQuery("FROM House", House.class).getResultList();
+            for (House theHouse : houses) {
+                //from Date to LocalDate
+                LocalDate ThehouseCheckIn = theHouse.getRent_info().getCheckIn().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                if (ThehouseCheckIn.isAfter(startDate) && ThehouseCheckIn.isBefore(endDate)) {
+                    returningHouses.add(theHouse);
+                }
+            }
+            em.getTransaction().commit();
+            return returningHouses;
+        } catch (HibernateException e) {
             System.out.println(e.getMessage());
         }
         return null;
@@ -119,19 +121,19 @@ public class HouseDaoImpl implements HouseDao {
     public void deleteHouseById(Long houseId) {
         try (EntityManager em = factory.createEntityManager()) {
             em.getTransaction().begin();
-           House house = em.find(House.class,houseId);
-           if(house.getOwner()!=null&&
-                   house.getRent_info()==null||
-                   house.getRent_info().getCheckOut().
-                   toInstant().
-                   atZone(ZoneId.systemDefault()).
-                   toLocalDate().
-                   isBefore(LocalDate.now())) {
-               house.getOwner().getHouses().remove(house);
-               em.remove(house);
-           }
-           em.getTransaction().commit();
-        }catch (HibernateException e){
+            House house = em.find(House.class, houseId);
+            if (house.getOwner() != null &&
+                    house.getRent_info() == null ||
+                    house.getRent_info().getCheckOut().
+                            toInstant().
+                            atZone(ZoneId.systemDefault()).
+                            toLocalDate().
+                            isBefore(LocalDate.now())) {
+                house.getOwner().getHouses().remove(house);
+                em.remove(house);
+            }
+            em.getTransaction().commit();
+        } catch (HibernateException e) {
             System.out.println(e.getMessage());
         }
     }
