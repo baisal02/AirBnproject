@@ -32,6 +32,7 @@ public class Address {
                 ", street='" + street + '\'' +
                 '}';
     }
+
     public Address(String region, String city, String street) {
         this.region = region;
         this.city = city;

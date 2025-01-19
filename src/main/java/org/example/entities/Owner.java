@@ -40,18 +40,17 @@ public class Owner {
     private List<House>houses = new ArrayList<>();
 
 
-
     @Override
     public String toString() {
         return "Owner{" +
-                "houses=" + houses +
-                ", id=" + id +
+                "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
                 ", gender=" + gender +
                 ", rent_infos=" + rent_infos +
+                ", houses=" + houses +
                 '}';
     }
 }

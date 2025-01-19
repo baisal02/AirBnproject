@@ -1,18 +1,14 @@
 package org.example;
 
 import org.example.config.HibernateConfig;
-import org.example.dao.AgencyDao;
-import org.example.dao.CustomerDao;
-import org.example.dao.HouseDao;
-import org.example.dao.OwnerDao;
-import org.example.dao.impl.AgencyDaoImpl;
-import org.example.dao.impl.CustomerDaoImpl;
-import org.example.dao.impl.HouseDaoImpl;
-import org.example.dao.impl.OwnerDaoImpl;
+import org.example.dao.*;
+import org.example.dao.impl.*;
 import org.example.entities.*;
+import org.example.entities.enums.HouseType;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Map;
 
 /**
  * Hello world!
@@ -52,8 +48,10 @@ public class App
         House houseA = new House();
         houseA.setDescription("CrazyHouse");
        // ownerDao.save(owner,houseA);
-
-        customerDao.saveWithRent(customer4,102L,format.parse("2025-12-20"),format.parse("2025-12-30"));
+        AddressDao addressDao = new AddressDaoImpl();
+       Map<Address,Agency>map= addressDao.getAddress_Agencies();
+        System.out.println(map);
+        //customerDao.saveWithRent(customer4,102L,format.parse("2025-12-20"),format.parse("2025-12-30"));
     }
 
 }

@@ -6,6 +6,7 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Entity
 @Getter
 @Setter
@@ -22,8 +23,6 @@ public class Agency {
 
 
 
-
-
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Address address;
 
@@ -33,19 +32,15 @@ public class Agency {
     @OneToMany(cascade = CascadeType.REMOVE)
     private List<rent_info>rent_infos = new ArrayList<>();
 
-
-
-
     @Override
     public String toString() {
         return "Agency{" +
-                "id=" + id +
+                "address=" + address +
+                ", id=" + id +
                 ", name='" + name + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", address=" + address +
                 ", owners=" + owners +
                 ", rent_infos=" + rent_infos +
                 '}';
     }
-
 }
